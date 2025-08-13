@@ -220,12 +220,15 @@
             <div class="flex items-center min-w-0 flex-1">
                 <!-- Ícone de Agenda Moderno -->
                 <div class="relative mr-2 sm:mr-3 lg:mr-4 flex-shrink-0">
-                    <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 xl:w-16 xl:h-16 text-white drop-shadow-lg hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                        <circle cx="17" cy="12" r="1.5" fill="currentColor"/>
-                        <circle cx="17" cy="16" r="1.5" fill="currentColor"/>
-                    </svg>
-                    <div class="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-white rounded-full animate-pulse shadow-lg"></div>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 xl:w-16 xl:h-16 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/30 hover:scale-110 transition-all duration-300 shadow-lg">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 xl:w-9 xl:h-9 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            <circle cx="9" cy="12" r="1" fill="currentColor"/>
+                            <circle cx="15" cy="12" r="1" fill="currentColor"/>
+                            <circle cx="9" cy="16" r="1" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full animate-pulse shadow-lg"></div>
                 </div>
                 <h1 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-white drop-shadow-lg truncate">MySchedule</h1>
             </div>
@@ -243,12 +246,36 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <!-- Navegação por abas -->
+        <div class="mb-6 sm:mb-8 fade-in">
+            <div class="flex space-x-1 bg-white/10 backdrop-blur-sm rounded-xl p-1 border border-white/20">
+                <button onclick="switchTab('calendar')" id="calendarTab" class="flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white bg-white/20 flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Agenda</span>
+                </button>
+                <button onclick="switchTab('achievements')" id="achievementsTab" class="flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white/70 hover:text-white hover:bg-white/10 flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
+                    <span>Realizações</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Conteúdo da Agenda -->
+        <div id="calendarContent" class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             <!-- Calendário -->
             <div class="xl:col-span-2 order-2 xl:order-1">
                 <div class="bg-gradient-to-br from-white to-blue-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 lg:p-6 card-hover fade-in border border-amber-200 hover:border-amber-300 transition-all duration-300">
                     <div class="flex items-center justify-between mb-4 sm:mb-6">
-                        <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent">Calendário</h2>
+                        <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent flex items-center space-x-2">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Calendário</span>
+                        </h2>
                         <div class="flex items-center space-x-2 sm:space-x-4">
                             <button onclick="previousMonth()" class="p-1.5 sm:p-2 hover:bg-gradient-to-r hover:from-amber-100 hover:to-amber-200 rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-md text-blue-700 hover:text-blue-800 touch-manipulation">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,7 +321,12 @@
             <div class="space-y-4 sm:space-y-6 order-1 xl:order-2">
                 <!-- Adicionar Compromisso -->
                 <div class="bg-gradient-to-br from-white to-amber-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-blue-200 hover:border-blue-300 transition-all duration-300">
-                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4">➕ Novo Compromisso</h3>
+                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        <span>Novo Compromisso</span>
+                    </h3>
                     <form onsubmit="addTask(event)" class="space-y-3 sm:space-y-4">
                         <input type="text" id="taskTitle" placeholder="Título do compromisso" 
                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 bg-white text-blue-900 placeholder-blue-400 hover:border-amber-300 transition-all duration-300 touch-manipulation" required>
@@ -324,75 +356,194 @@
 
                 <!-- Compromissos de Hoje -->
                 <div class="bg-gradient-to-br from-white to-blue-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-amber-200 hover:border-amber-300 transition-all duration-300">
-                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent mb-3 sm:mb-4">📋 Hoje</h3>
+                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Hoje</span>
+                    </h3>
                     <div id="todayTasks" class="space-y-2 sm:space-y-3">
                         <p class="text-gray-500 dark:text-gray-400 text-center py-3 sm:py-4 text-sm sm:text-base">Nenhum compromisso para hoje</p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Lista de Todos os Compromissos -->
-        <div class="mt-8 bg-gradient-to-br from-white to-blue-50 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover fade-in border border-amber-200 hover:border-amber-300 transition-all duration-300">
-            <div class="mb-6">
-                <h3 class="text-xl md:text-2xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent mb-4">📝 Todos os Compromissos</h3>
-                
-                <!-- Sistema de Pesquisa -->
-                <div class="mb-4 p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                        <div>
-                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">🔍 Pesquisar por data:</label>
-                            <input type="date" id="searchDate" onchange="searchByDate()" 
-                                   class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
+            <!-- Lista de Todos os Compromissos -->
+            <div class="mt-8 bg-gradient-to-br from-white to-blue-50 backdrop-blur-sm rounded-2xl shadow-xl p-6 card-hover fade-in border border-amber-200 hover:border-amber-300 transition-all duration-300">
+                <div class="mb-6">
+                    <h3 class="text-xl md:text-2xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent mb-4 flex items-center space-x-2">
+                        <svg class="w-6 h-6 md:w-7 md:h-7 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                        <span>Todos os Compromissos</span>
+                    </h3>
+                    
+                    <!-- Sistema de Pesquisa -->
+                    <div class="mb-4 p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl border border-gray-200 dark:border-gray-600">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                    <span>Pesquisar por data:</span>
+                                </label>
+                                <input type="date" id="searchDate" onchange="searchByDate()" 
+                                       class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <span>Período:</span>
+                                </label>
+                                <select id="periodFilter" onchange="filterByPeriod()" 
+                                        class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
+                                    <option value="all">Todos os períodos</option>
+                                    <option value="today">Hoje</option>
+                                    <option value="tomorrow">Amanhã</option>
+                                    <option value="week">Esta semana</option>
+                                    <option value="month">Este mês</option>
+                                    <option value="past">Compromissos passados</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2 lg:col-span-1">
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center space-x-1">
+                                    <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                    <span>Prioridade:</span>
+                                </label>
+                                <select id="priorityFilter" onchange="filterTasks(this.value)" 
+                                        class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
+                                    <option value="all">Todas as prioridades</option>
+                                    <option value="high">⚡ Alta Prioridade</option>
+                                    <option value="medium">⚠️ Média Prioridade</option>
+                                    <option value="low">✅ Baixa Prioridade</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">📅 Período:</label>
-                            <select id="periodFilter" onchange="filterByPeriod()" 
-                                    class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
-                                <option value="all">Todos os períodos</option>
-                                <option value="today">Hoje</option>
-                                <option value="tomorrow">Amanhã</option>
-                                <option value="week">Esta semana</option>
-                                <option value="month">Este mês</option>
-                                <option value="past">Compromissos passados</option>
-                            </select>
-                        </div>
-                        <div class="sm:col-span-2 lg:col-span-1">
-                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">🎯 Prioridade:</label>
-                            <select id="priorityFilter" onchange="filterTasks(this.value)" 
-                                    class="w-full px-2 sm:px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs sm:text-sm bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
-                                <option value="all">Todas as prioridades</option>
-                                <option value="high">🔴 Alta Prioridade</option>
-                                <option value="medium">🟡 Média Prioridade</option>
-                                <option value="low">🟢 Baixa Prioridade</option>
-                            </select>
+                        
+                        <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                <button onclick="clearFilters()" class="px-3 py-2 text-xs sm:text-sm bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg transition-all duration-300 text-center">
+                                    Limpar Filtros
+                                </button>
+                                <span id="filterResults" class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left"></span>
+                            </div>
+                            <div class="flex items-center justify-center sm:justify-end gap-2">
+                                <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Ordenar:</span>
+                                <select id="sortOrder" onchange="updateAllTasks()" 
+                                        class="px-2 py-1 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 min-w-0 flex-1 sm:flex-none bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
+                                    <option value="date-asc">Data (próxima)</option>
+                                    <option value="date-desc">Data (distante)</option>
+                                    <option value="priority">Prioridade</option>
+                                    <option value="title">Título (A-Z)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
-                            <button onclick="clearFilters()" class="px-3 py-2 text-xs sm:text-sm bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 rounded-lg transition-all duration-300 text-center">
-                                Limpar Filtros
-                            </button>
-                            <span id="filterResults" class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left"></span>
+                </div>
+                <div id="allTasks" class="space-y-3">
+                    <p class="text-gray-500 dark:text-gray-400 text-center py-8">Nenhum compromisso cadastrado ainda</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo das Realizações -->
+        <div id="achievementsContent" class="hidden">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                <!-- Lista de Realizações -->
+                <div class="xl:col-span-2 order-2 xl:order-1">
+                    <div class="bg-gradient-to-br from-white to-purple-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-3 sm:p-4 lg:p-6 card-hover fade-in border border-purple-200 hover:border-purple-300 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-4 sm:mb-6">
+                            <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent flex items-center space-x-2">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                </svg>
+                                <span>Minhas Realizações</span>
+                            </h2>
+                            <div class="flex items-center space-x-2 sm:space-x-4">
+                                <select id="yearFilter" onchange="filterAchievementsByYear()" 
+                                        class="px-3 py-2 text-sm border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 hover:border-purple-300 transition-all duration-300">
+                                    <option value="all">Todos os anos</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-center sm:justify-end gap-2">
-                            <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">Ordenar:</span>
-                            <select id="sortOrder" onchange="updateAllTasks()" 
-                                    class="px-2 py-1 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-blue-500 min-w-0 flex-1 sm:flex-none bg-white dark:bg-gray-600 text-gray-900 dark:text-white">
-                                <option value="date-asc">Data (próxima)</option>
-                                <option value="date-desc">Data (distante)</option>
-                                <option value="priority">Prioridade</option>
-                                <option value="title">Título (A-Z)</option>
-                            </select>
+                        
+                        <div id="achievementsList" class="space-y-4">
+                            <p class="text-gray-500 text-center py-8">Nenhuma realização cadastrada ainda</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Painel Lateral - Adicionar Realização -->
+                <div class="space-y-4 sm:space-y-6 order-1 xl:order-2">
+                    <!-- Adicionar Realização -->
+                    <div class="bg-gradient-to-br from-white to-purple-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-purple-200 hover:border-purple-300 transition-all duration-300">
+                        <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                            <span>Nova Realização</span>
+                        </h3>
+                        <form onsubmit="addAchievement(event)" class="space-y-3 sm:space-y-4">
+                            <input type="text" id="achievementTitle" placeholder="Título da realização" 
+                                   class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 placeholder-purple-400 hover:border-purple-300 transition-all duration-300 touch-manipulation" required>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                <input type="date" id="achievementDate" 
+                                       class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 hover:border-purple-300 transition-all duration-300 touch-manipulation" required>
+                                
+                                <select id="achievementCategory" class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 hover:border-purple-300 transition-all duration-300 touch-manipulation">
+                                    <option value="personal">✨ Pessoal</option>
+                                    <option value="professional">💼 Profissional</option>
+                                    <option value="academic">🎓 Acadêmico</option>
+                                    <option value="health">💪 Saúde</option>
+                                    <option value="creative">🎨 Criativo</option>
+                                    <option value="social">👥 Social</option>
+                                    <option value="financial">💰 Financeiro</option>
+                                    <option value="other">🔸 Outro</option>
+                                </select>
+                            </div>
+                            
+                            <textarea id="achievementDescription" placeholder="Descrição da realização" rows="3"
+                                      class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 resize-none bg-white text-purple-900 placeholder-purple-400 hover:border-purple-300 transition-all duration-300 touch-manipulation" required></textarea>
+                            
+                            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium py-3 px-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-purple-200 button-pulse border border-purple-300 hover:border-purple-400 touch-manipulation">
+                                Adicionar Realização
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Estatísticas -->
+                    <div class="bg-gradient-to-br from-white to-purple-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-purple-200 hover:border-purple-300 transition-all duration-300">
+                        <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                            <span>Estatísticas</span>
+                        </h3>
+                        <div id="achievementStats" class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Total de realizações:</span>
+                                <span id="totalAchievements" class="font-semibold text-purple-700">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Este ano:</span>
+                                <span id="thisYearAchievements" class="font-semibold text-purple-700">0</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Este mês:</span>
+                                <span id="thisMonthAchievements" class="font-semibold text-purple-700">0</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="allTasks" class="space-y-3">
-                <p class="text-gray-500 dark:text-gray-400 text-center py-8">Nenhum compromisso cadastrado ainda</p>
-            </div>
         </div>
+
+
 
         <!-- Rodapé -->
         <footer class="mt-12 text-center py-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 rounded-xl fade-in">
@@ -478,11 +629,68 @@
 
 
 
+    <!-- Modal de Edição de Realização -->
+    <div id="editAchievementModal" class="fixed inset-0 bg-gradient-to-br from-purple-900/80 to-pink-900/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-gradient-to-br from-white/95 to-purple-50/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 card-hover border border-purple-300 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold bg-gradient-to-r from-purple-800 to-purple-600 bg-clip-text text-transparent flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    <span>Editar Realização</span>
+                </h3>
+                <button onclick="closeEditAchievementModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form onsubmit="updateAchievement(event)" class="space-y-4">
+                <input type="hidden" id="editAchievementId">
+                
+                <input type="text" id="editAchievementTitle" placeholder="Título da realização" 
+                       class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 placeholder-purple-400 hover:border-purple-300 transition-all duration-300" required>
+                
+                <input type="date" id="editAchievementDate" 
+                       class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 hover:border-purple-300 transition-all duration-300" required>
+                
+                <select id="editAchievementCategory" class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 bg-white text-purple-900 hover:border-purple-300 transition-all duration-300">
+                    <option value="personal">✨ Pessoal</option>
+                    <option value="professional">💼 Profissional</option>
+                    <option value="academic">🎓 Acadêmico</option>
+                    <option value="health">💪 Saúde</option>
+                    <option value="creative">🎨 Criativo</option>
+                    <option value="social">👥 Social</option>
+                    <option value="financial">💰 Financeiro</option>
+                    <option value="other">🔸 Outro</option>
+                </select>
+                
+                <textarea id="editAchievementDescription" placeholder="Descrição da realização" rows="3"
+                          class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 focus:border-purple-400 resize-none bg-white text-purple-900 placeholder-purple-400 hover:border-purple-300 transition-all duration-300" required></textarea>
+                
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeEditAchievementModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 font-medium py-3 px-4 rounded-lg transition-all duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-medium py-3 px-4 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl border border-purple-300 hover:border-purple-400">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal de Edição de Compromisso -->
     <div id="editModal" class="fixed inset-0 bg-gradient-to-br from-blue-900/80 to-amber-900/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
         <div class="bg-gradient-to-br from-white/95 to-blue-50/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full mx-4 card-hover border border-amber-300 shadow-2xl">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent">✏️ Editar Compromisso</h3>
+                <h3 class="text-xl font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    <span>Editar Compromisso</span>
+                </h3>
                 <button onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -503,9 +711,9 @@
                        class="w-full px-4 py-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 bg-white text-blue-900 hover:border-amber-300 transition-all duration-300">
                 
                 <select id="editTaskPriority" class="w-full px-4 py-3 border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 bg-white text-blue-900 hover:border-amber-300 transition-all duration-300">
-                    <option value="low">🟢 Baixa Prioridade</option>
-                    <option value="medium">🟡 Média Prioridade</option>
-                    <option value="high">🔴 Alta Prioridade</option>
+                    <option value="low">✅ Baixa Prioridade</option>
+                    <option value="medium">⚠️ Média Prioridade</option>
+                    <option value="high">⚡ Alta Prioridade</option>
                 </select>
                 
                 <textarea id="editTaskDescription" placeholder="Descrição (opcional)" rows="3"
@@ -528,8 +736,10 @@
     <script>
         let currentDate = new Date();
         let tasks = [];
+        let achievements = [];
         let selectedDate = null;
         let currentUser = null;
+        let currentTab = 'calendar';
 
         // Inicializar a agenda
         function init() {
@@ -554,6 +764,54 @@
             // Definir data de hoje como padrão
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('taskDate').value = today;
+            document.getElementById('achievementDate').value = today;
+            
+            // Inicializar filtro de anos
+            initializeYearFilter();
+        }
+
+        // Alternar entre abas
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Atualizar aparência das abas
+            const calendarTab = document.getElementById('calendarTab');
+            const achievementsTab = document.getElementById('achievementsTab');
+            
+            if (tab === 'calendar') {
+                calendarTab.className = 'flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white bg-white/20';
+                achievementsTab.className = 'flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white/70 hover:text-white hover:bg-white/10';
+                
+                document.getElementById('calendarContent').classList.remove('hidden');
+                document.getElementById('achievementsContent').classList.add('hidden');
+            } else {
+                achievementsTab.className = 'flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white bg-white/20';
+                calendarTab.className = 'flex-1 py-2 px-4 text-sm sm:text-base font-medium rounded-lg transition-all duration-300 text-white/70 hover:text-white hover:bg-white/10';
+                
+                document.getElementById('calendarContent').classList.add('hidden');
+                document.getElementById('achievementsContent').classList.remove('hidden');
+                
+                // Atualizar realizações quando a aba for aberta
+                updateAchievements();
+                updateAchievementStats();
+            }
+        }
+
+        // Inicializar filtro de anos
+        function initializeYearFilter() {
+            const yearFilter = document.getElementById('yearFilter');
+            const currentYear = new Date().getFullYear();
+            
+            // Adicionar anos de 2020 até o ano atual + 2
+            for (let year = 2020; year <= currentYear + 2; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                if (year === currentYear) {
+                    option.selected = true;
+                }
+                yearFilter.appendChild(option);
+            }
         }
 
 
@@ -577,6 +835,7 @@
 
         // Carregar tarefas do usuário com sincronização em tempo real
         let unsubscribeEvents = null;
+        let unsubscribeAchievements = null;
         
         async function loadUserTasks() {
             try {
@@ -584,22 +843,40 @@
                 if (unsubscribeEvents) {
                     unsubscribeEvents();
                 }
+                if (unsubscribeAchievements) {
+                    unsubscribeAchievements();
+                }
                 
                 const eventsRef = db.collection('users').doc(currentUser.uid).collection('events');
                 
-                // Configurar listener em tempo real
+                // Configurar listener em tempo real para eventos (incluindo realizações)
                 unsubscribeEvents = eventsRef.onSnapshot((querySnapshot) => {
                     tasks = [];
+                    achievements = [];
+                    
                     querySnapshot.forEach((doc) => {
-                        tasks.push({ id: doc.id, ...doc.data() });
+                        const data = { id: doc.id, ...doc.data() };
+                        
+                        // Separar realizações dos compromissos
+                        if (data.type === 'achievement') {
+                            achievements.push(data);
+                        } else {
+                            tasks.push(data);
+                        }
                     });
                     
                     updateCalendar();
                     updateTodayTasks();
                     updateAllTasks();
                     
+                    // Atualizar realizações se estivermos na aba de realizações
+                    if (currentTab === 'achievements') {
+                        updateAchievements();
+                        updateAchievementStats();
+                    }
+                    
                     // Mostrar notificação apenas se não for o primeiro carregamento
-                    if (tasks.length > 0 && querySnapshot.metadata.hasPendingWrites === false && !querySnapshot.metadata.fromCache) {
+                    if ((tasks.length > 0 || achievements.length > 0) && querySnapshot.metadata.hasPendingWrites === false && !querySnapshot.metadata.fromCache) {
                         console.log('Dados sincronizados em tempo real!');
                     }
                 }, (error) => {
@@ -706,10 +983,14 @@
         // Logout
         async function logout() {
             try {
-                // Desconectar listener de sincronização
+                // Desconectar listeners de sincronização
                 if (unsubscribeEvents) {
                     unsubscribeEvents();
                     unsubscribeEvents = null;
+                }
+                if (unsubscribeAchievements) {
+                    unsubscribeAchievements();
+                    unsubscribeAchievements = null;
                 }
                 
                 await auth.signOut();
@@ -1421,8 +1702,295 @@
             }
         }
 
+        // Adicionar realização
+        async function addAchievement(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Você precisa estar logado para adicionar realizações', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('achievementTitle').value.trim();
+            const date = document.getElementById('achievementDate').value;
+            const category = document.getElementById('achievementCategory').value;
+            const description = document.getElementById('achievementDescription').value.trim();
+            
+            if (!title || !date || !description) {
+                showNotification('Por favor, preencha todos os campos obrigatórios', 'error');
+                return;
+            }
+            
+            // Usar a mesma estrutura dos eventos para garantir compatibilidade
+            const achievement = {
+                title: title,
+                date: date,
+                category: category,
+                description: description,
+                completed: false, // Adicionar campo padrão
+                priority: 'medium', // Adicionar campo padrão
+                time: '', // Adicionar campo padrão
+                createdAt: new Date()
+            };
+            
+            try {
+                // Usar a coleção 'events' com um prefixo para identificar realizações
+                const docRef = await db.collection('users').doc(currentUser.uid).collection('events').add({
+                    ...achievement,
+                    type: 'achievement' // Identificador para diferenciar de compromissos
+                });
+                
+                // Limpar formulário
+                document.getElementById('achievementTitle').value = '';
+                document.getElementById('achievementDescription').value = '';
+                
+                showNotification('Realização adicionada com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao adicionar realização:', error);
+                let errorMessage = 'Erro ao adicionar realização';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Erro de permissão. Tente fazer logout e login novamente';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Serviço temporariamente indisponível. Tente novamente';
+                } else if (error.code === 'unauthenticated') {
+                    errorMessage = 'Sessão expirada. Faça login novamente';
+                } else {
+                    errorMessage = `Erro: ${error.message}`;
+                }
+                
+                showNotification(errorMessage, 'error');
+            }
+        }
+
+        // Atualizar lista de realizações
+        function updateAchievements() {
+            const container = document.getElementById('achievementsList');
+            const yearFilter = document.getElementById('yearFilter').value;
+            
+            if (achievements.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhuma realização cadastrada ainda</p>';
+                return;
+            }
+            
+            // Filtrar por ano se selecionado
+            let filteredAchievements = achievements;
+            if (yearFilter !== 'all') {
+                filteredAchievements = achievements.filter(achievement => {
+                    const achievementYear = new Date(achievement.date).getFullYear();
+                    return achievementYear.toString() === yearFilter;
+                });
+            }
+            
+            if (filteredAchievements.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhuma realização encontrada para este ano</p>';
+                return;
+            }
+            
+            // Ordenar por data (mais recente primeiro)
+            filteredAchievements.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Agrupar por ano
+            const achievementsByYear = {};
+            filteredAchievements.forEach(achievement => {
+                const year = new Date(achievement.date).getFullYear();
+                if (!achievementsByYear[year]) {
+                    achievementsByYear[year] = [];
+                }
+                achievementsByYear[year].push(achievement);
+            });
+            
+            let html = '';
+            Object.keys(achievementsByYear).sort((a, b) => b - a).forEach(year => {
+                const yearAchievements = achievementsByYear[year];
+                
+                html += `
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold text-purple-800 mb-4 flex items-center">
+                            <span class="mr-2">📅</span>
+                            ${year} (${yearAchievements.length} realizações)
+                        </h4>
+                        <div class="space-y-3">
+                            ${yearAchievements.map(achievement => {
+                                const categoryIcons = {
+                                    'personal': '🌟',
+                                    'professional': '💼',
+                                    'academic': '🎓',
+                                    'health': '💪',
+                                    'creative': '🎨',
+                                    'social': '👥',
+                                    'financial': '💰',
+                                    'other': '🔹'
+                                };
+                                
+                                const categoryNames = {
+                                    'personal': 'Pessoal',
+                                    'professional': 'Profissional',
+                                    'academic': 'Acadêmico',
+                                    'health': 'Saúde',
+                                    'creative': 'Criativo',
+                                    'social': 'Social',
+                                    'financial': 'Financeiro',
+                                    'other': 'Outro'
+                                };
+                                
+                                return `
+                                    <div class="achievement-item p-4 bg-white border border-purple-200 rounded-lg hover:shadow-md transition-all duration-300 hover:border-purple-300">
+                                        <div class="flex items-start justify-between">
+                                            <div class="flex-1">
+                                                <div class="flex items-center space-x-2 mb-2">
+                                                    <span class="text-lg">${categoryIcons[achievement.category]}</span>
+                                                    <h5 class="font-semibold text-purple-900">${achievement.title}</h5>
+                                                    <span class="px-2 py-1 text-xs rounded-full font-medium bg-purple-100 text-purple-700">
+                                                        ${categoryNames[achievement.category]}
+                                                    </span>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mb-2">${achievement.description}</p>
+                                                <p class="text-xs text-gray-500">
+                                                    📅 ${new Date(achievement.date).toLocaleDateString('pt-BR')}
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center space-x-1 ml-2">
+                                                <button onclick="editAchievement('${achievement.id}')" class="text-purple-500 hover:text-purple-700 p-1 rounded hover:bg-purple-50 transition-all duration-300" title="Editar">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                    </svg>
+                                                </button>
+                                                <button onclick="deleteAchievement('${achievement.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-all duration-300" title="Excluir">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Filtrar realizações por ano
+        function filterAchievementsByYear() {
+            updateAchievements();
+        }
+
+        // Atualizar estatísticas de realizações
+        function updateAchievementStats() {
+            const currentYear = new Date().getFullYear();
+            const currentMonth = new Date().getMonth();
+            
+            const totalAchievements = achievements.length;
+            const thisYearAchievements = achievements.filter(achievement => 
+                new Date(achievement.date).getFullYear() === currentYear
+            ).length;
+            const thisMonthAchievements = achievements.filter(achievement => {
+                const date = new Date(achievement.date);
+                return date.getFullYear() === currentYear && date.getMonth() === currentMonth;
+            }).length;
+            
+            document.getElementById('totalAchievements').textContent = totalAchievements;
+            document.getElementById('thisYearAchievements').textContent = thisYearAchievements;
+            document.getElementById('thisMonthAchievements').textContent = thisMonthAchievements;
+        }
+
+        // Editar realização
+        function editAchievement(id) {
+            const achievement = achievements.find(a => a.id === String(id));
+            if (!achievement) return;
+            
+            // Preencher o modal com os dados da realização
+            document.getElementById('editAchievementId').value = achievement.id;
+            document.getElementById('editAchievementTitle').value = achievement.title;
+            document.getElementById('editAchievementDate').value = achievement.date;
+            document.getElementById('editAchievementCategory').value = achievement.category;
+            document.getElementById('editAchievementDescription').value = achievement.description;
+            
+            // Mostrar o modal
+            document.getElementById('editAchievementModal').classList.remove('hidden');
+        }
+
+        // Fechar modal de edição de realização
+        function closeEditAchievementModal() {
+            document.getElementById('editAchievementModal').classList.add('hidden');
+        }
+
+        // Atualizar realização
+        async function updateAchievement(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Você precisa estar logado para editar realizações', 'error');
+                return;
+            }
+            
+            const achievementId = document.getElementById('editAchievementId').value;
+            const title = document.getElementById('editAchievementTitle').value.trim();
+            const date = document.getElementById('editAchievementDate').value;
+            const category = document.getElementById('editAchievementCategory').value;
+            const description = document.getElementById('editAchievementDescription').value.trim();
+            
+            if (!title || !date || !description) {
+                showNotification('Por favor, preencha todos os campos obrigatórios', 'error');
+                return;
+            }
+            
+            const updatedAchievement = {
+                title: title,
+                date: date,
+                category: category,
+                description: description,
+                type: 'achievement', // Manter o tipo
+                updatedAt: new Date()
+            };
+            
+            try {
+                // Usar a coleção 'events' onde as realizações estão armazenadas
+                await db.collection('users').doc(currentUser.uid).collection('events').doc(achievementId).update(updatedAchievement);
+                
+                closeEditAchievementModal();
+                showNotification('Realização atualizada com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao atualizar realização:', error);
+                let errorMessage = 'Erro ao atualizar realização';
+                
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Erro de permissão. Tente fazer logout e login novamente';
+                } else if (error.code === 'not-found') {
+                    errorMessage = 'Realização não encontrada';
+                } else if (error.code === 'unauthenticated') {
+                    errorMessage = 'Sessão expirada. Faça login novamente';
+                } else {
+                    errorMessage = `Erro: ${error.message}`;
+                }
+                
+                showNotification(errorMessage, 'error');
+            }
+        }
+
+        // Deletar realização
+        async function deleteAchievement(id) {
+            if (!currentUser) return;
+            
+            if (confirm('Tem certeza que deseja excluir esta realização?')) {
+                try {
+                    // Usar a coleção 'events' onde as realizações estão armazenadas
+                    await db.collection('users').doc(currentUser.uid).collection('events').doc(String(id)).delete();
+                    
+                    showNotification('Realização excluída!', 'success');
+                } catch (error) {
+                    console.error('Erro ao excluir realização:', error);
+                    showNotification('Erro ao excluir realização', 'error');
+                }
+            }
+        }
+
         // Inicializar quando a página carregar
         init();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e0a34bf4f2521f',t:'MTc1NTAwODY4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e869aed34f5221',t:'MTc1NTA5MDIwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
