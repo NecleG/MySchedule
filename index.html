@@ -342,7 +342,17 @@
                     <!-- Compromissos do Dia Selecionado -->
                     <div id="selectedDayTasks" class="mt-6 hidden">
                         <div class="border-t border-amber-200 pt-4">
-                            <h4 id="selectedDayTitle" class="text-lg font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent mb-3"></h4>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 id="selectedDayTitle" class="text-lg font-semibold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent"></h4>
+                                <div class="flex items-center space-x-2">
+                                    <button onclick="addQuickTask()" class="px-3 py-1 text-xs bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 shadow-sm touch-manipulation">
+                                        ⚡ Adicionar Rápido
+                                    </button>
+                                    <div id="weatherInfo" class="text-xs text-gray-600 bg-white/50 px-2 py-1 rounded-lg border border-gray-200 hidden">
+                                        🌤️ <span id="weatherTemp"></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="selectedDayTasksList" class="space-y-2">
                                 <!-- Compromissos do dia selecionado aparecerão aqui -->
                             </div>
@@ -388,6 +398,79 @@
                             </select>
                         </div>
                         
+                        <!-- Opção de Repetir -->
+                        <div class="relative">
+                            <label class="flex items-center space-x-2 text-sm font-medium text-blue-700">
+                                <input type="checkbox" id="taskRepeat" onchange="toggleRepeatOptions()" class="rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                <span>🔄 Repetir compromisso</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Opções de Repetição (inicialmente ocultas) -->
+                        <div id="repeatOptions" class="hidden space-y-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                            <div>
+                                <label class="block text-xs font-medium text-blue-700 mb-2">Repetir nos dias:</label>
+                                <div class="grid grid-cols-7 gap-1">
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="0" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Dom</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="1" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Seg</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="2" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Ter</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="3" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Qua</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="4" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Qui</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="5" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Sex</span>
+                                    </label>
+                                    <label class="flex flex-col items-center space-y-1 p-2 rounded-lg hover:bg-blue-100 transition-colors cursor-pointer">
+                                        <input type="checkbox" value="6" class="repeat-day rounded text-blue-600 focus:ring-blue-500 touch-manipulation">
+                                        <span class="text-xs font-medium text-blue-700">Sáb</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-medium text-blue-700 mb-1">Repetir por:</label>
+                                    <select id="repeatDuration" class="w-full px-3 py-2 text-sm border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 bg-white text-blue-900">
+                                        <option value="4">4 semanas</option>
+                                        <option value="8">8 semanas</option>
+                                        <option value="12" selected>12 semanas</option>
+                                        <option value="24">24 semanas</option>
+                                        <option value="52">1 ano</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-xs font-medium text-blue-700 mb-1">Atalhos:</label>
+                                    <div class="flex space-x-1">
+                                        <button type="button" onclick="selectWeekdays()" class="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors touch-manipulation">
+                                            Seg-Sex
+                                        </button>
+                                        <button type="button" onclick="selectWeekend()" class="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors touch-manipulation">
+                                            Fim de semana
+                                        </button>
+                                        <button type="button" onclick="selectAllDays()" class="px-2 py-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 rounded transition-colors touch-manipulation">
+                                            Todos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <textarea id="taskDescription" placeholder="Descrição (opcional)" rows="2"
                                   class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-amber-200 rounded-lg focus:ring-2 focus:ring-amber-400 focus:border-amber-400 resize-none bg-white text-blue-900 placeholder-blue-400 hover:border-amber-300 transition-all duration-300 touch-manipulation"></textarea>
                         
@@ -399,14 +482,78 @@
 
                 <!-- Compromissos de Hoje -->
                 <div class="bg-gradient-to-br from-white to-blue-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-amber-200 hover:border-amber-300 transition-all duration-300">
-                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
-                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <span>Hoje</span>
-                    </h3>
+                    <div class="flex items-center justify-between mb-3 sm:mb-4">
+                        <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent flex items-center space-x-2">
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span>Hoje</span>
+                        </h3>
+                        <div id="todayProgress" class="flex items-center space-x-2">
+                            <div class="w-8 h-8 relative">
+                                <svg class="w-8 h-8 transform -rotate-90" viewBox="0 0 32 32">
+                                    <circle cx="16" cy="16" r="14" stroke="#e5e7eb" stroke-width="2" fill="none"/>
+                                    <circle id="progressCircle" cx="16" cy="16" r="14" stroke="#10b981" stroke-width="2" fill="none" stroke-dasharray="87.96" stroke-dashoffset="87.96" class="transition-all duration-500"/>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span id="progressText" class="text-xs font-bold text-green-600">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="todayTasks" class="space-y-2 sm:space-y-3">
                         <p class="text-gray-500 dark:text-gray-400 text-center py-3 sm:py-4 text-sm sm:text-base">Nenhum compromisso para hoje</p>
+                    </div>
+                </div>
+
+                <!-- Insights de Produtividade -->
+                <div class="bg-gradient-to-br from-white to-green-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-green-200 hover:border-green-300 transition-all duration-300">
+                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <span>Insights</span>
+                    </h3>
+                    <div id="productivityInsights" class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Esta semana:</span>
+                            <span id="weeklyCompleted" class="font-semibold text-green-600">0 concluídos</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Sequência atual:</span>
+                            <span id="currentStreak" class="font-semibold text-blue-600">0 dias 🔥</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Próximo compromisso:</span>
+                            <span id="nextTask" class="font-semibold text-purple-600">-</span>
+                        </div>
+                        <div id="motivationalTip" class="mt-3 p-2 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+                            <p class="text-xs text-blue-700 font-medium">💡 Dica: Organize suas tarefas por prioridade para ser mais produtivo!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates Rápidos -->
+                <div class="bg-gradient-to-br from-white to-purple-50 backdrop-blur-sm rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 card-hover fade-in border border-purple-200 hover:border-purple-300 transition-all duration-300">
+                    <h3 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-purple-500 bg-clip-text text-transparent mb-3 sm:mb-4 flex items-center space-x-2">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span>Templates</span>
+                    </h3>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button onclick="addTemplateTask('Reunião de trabalho', '09:00', 'medium')" class="text-left p-2 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors text-sm touch-manipulation">
+                            💼 Reunião de trabalho
+                        </button>
+                        <button onclick="addTemplateTask('Exercício físico', '07:00', 'high')" class="text-left p-2 bg-green-50 hover:bg-green-100 rounded-lg transition-colors text-sm touch-manipulation">
+                            🏃‍♂️ Exercício físico
+                        </button>
+                        <button onclick="addTemplateTask('Estudar', '19:00', 'high')" class="text-left p-2 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition-colors text-sm touch-manipulation">
+                            📚 Estudar
+                        </button>
+                        <button onclick="addTemplateTask('Médico', '14:00', 'high')" class="text-left p-2 bg-red-50 hover:bg-red-100 rounded-lg transition-colors text-sm touch-manipulation">
+                            🏥 Consulta médica
+                        </button>
                     </div>
                 </div>
             </div>
@@ -967,6 +1114,7 @@
             updateCalendar();
             updateTodayTasks();
             updateAllTasks();
+            updateProductivityInsights();
             
             // Definir data de hoje como padrão
             const today = new Date().toISOString().split('T')[0];
@@ -975,6 +1123,9 @@
             
             // Inicializar filtro de anos
             initializeYearFilter();
+            
+            // Atualizar dicas motivacionais a cada 30 segundos
+            setInterval(updateMotivationalTip, 30000);
         }
 
         // Alternar entre abas
@@ -1075,6 +1226,7 @@
                     updateCalendar();
                     updateTodayTasks();
                     updateAllTasks();
+                    updateProductivityInsights();
                     
                     // Atualizar realizações se estivermos na aba de realizações
                     if (currentTab === 'achievements') {
@@ -1220,6 +1372,9 @@
                 let errorMessage = 'Erro no login com Google';
                 
                 switch (error.code) {
+                    case 'auth/unauthorized-domain':
+                        errorMessage = 'Domínio não autorizado. O administrador precisa adicionar este domínio no Firebase Console. Use login com email por enquanto.';
+                        break;
                     case 'auth/popup-closed-by-user':
                         errorMessage = 'Login cancelado. A janela foi fechada antes de completar o login';
                         break;
@@ -1468,16 +1623,158 @@
             
             try {
                 const eventsRef = window.collection(window.db, 'users', currentUser.uid, 'events');
-                const docRef = await window.addDoc(eventsRef, task);
-                task.id = docRef.id;
+                
+                // Verificar se deve repetir
+                const shouldRepeat = document.getElementById('taskRepeat').checked;
+                
+                if (shouldRepeat) {
+                    const selectedDays = Array.from(document.querySelectorAll('.repeat-day:checked')).map(cb => parseInt(cb.value));
+                    const duration = parseInt(document.getElementById('repeatDuration').value);
+                    
+                    if (selectedDays.length === 0) {
+                        showNotification('Selecione pelo menos um dia para repetir', 'error');
+                        return;
+                    }
+                    
+                    // Criar tarefas repetidas
+                    const baseDate = new Date(task.date);
+                    const tasksToAdd = [];
+                    
+                    for (let week = 0; week < duration; week++) {
+                        for (const dayOfWeek of selectedDays) {
+                            const taskDate = new Date(baseDate);
+                            taskDate.setDate(baseDate.getDate() + (week * 7) + (dayOfWeek - baseDate.getDay()));
+                            
+                            // Não adicionar datas no passado (exceto a data original)
+                            if (taskDate >= baseDate || taskDate.toDateString() === baseDate.toDateString()) {
+                                tasksToAdd.push({
+                                    ...task,
+                                    date: taskDate.toISOString().split('T')[0],
+                                    isRepeated: true,
+                                    originalDate: task.date
+                                });
+                            }
+                        }
+                    }
+                    
+                    // Adicionar todas as tarefas
+                    for (const taskToAdd of tasksToAdd) {
+                        await window.addDoc(eventsRef, taskToAdd);
+                    }
+                    
+                    showNotification(`${tasksToAdd.length} compromissos adicionados com sucesso!`, 'success');
+                } else {
+                    // Adicionar tarefa única
+                    await window.addDoc(eventsRef, task);
+                    showNotification('Compromisso adicionado com sucesso!', 'success');
+                }
                 
                 // Limpar formulário
                 document.getElementById('taskTitle').value = '';
                 document.getElementById('taskTime').value = '';
                 document.getElementById('taskDescription').value = '';
+                document.getElementById('taskRepeat').checked = false;
+                document.getElementById('repeatOptions').classList.add('hidden');
+                document.querySelectorAll('.repeat-day').forEach(cb => cb.checked = false);
                 
-                // Não precisa atualizar manualmente - sincronização automática
-                showNotification('Compromisso adicionado com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao adicionar tarefa:', error);
+                showNotification('Erro ao adicionar compromisso', 'error');
+            }
+        }
+
+        // Alternar opções de repetição
+        function toggleRepeatOptions() {
+            const repeatOptions = document.getElementById('repeatOptions');
+            const isChecked = document.getElementById('taskRepeat').checked;
+            
+            if (isChecked) {
+                repeatOptions.classList.remove('hidden');
+            } else {
+                repeatOptions.classList.add('hidden');
+                // Limpar seleções
+                document.querySelectorAll('.repeat-day').forEach(cb => cb.checked = false);
+            }
+        }
+
+        // Atalhos para seleção de dias
+        function selectWeekdays() {
+            document.querySelectorAll('.repeat-day').forEach(cb => cb.checked = false);
+            [1, 2, 3, 4, 5].forEach(day => {
+                document.querySelector(`.repeat-day[value="${day}"]`).checked = true;
+            });
+        }
+
+        function selectWeekend() {
+            document.querySelectorAll('.repeat-day').forEach(cb => cb.checked = false);
+            [0, 6].forEach(day => {
+                document.querySelector(`.repeat-day[value="${day}"]`).checked = true;
+            });
+        }
+
+        function selectAllDays() {
+            document.querySelectorAll('.repeat-day').forEach(cb => cb.checked = true);
+        }
+
+        // Adicionar tarefa rápida
+        function addQuickTask() {
+            if (!selectedDate) {
+                showNotification('Selecione uma data primeiro', 'error');
+                return;
+            }
+            
+            const title = prompt('Digite o título do compromisso:');
+            if (!title) return;
+            
+            const time = prompt('Digite o horário (opcional, formato HH:MM):') || '';
+            
+            // Validar formato do horário se fornecido
+            if (time && !/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                showNotification('Formato de horário inválido. Use HH:MM', 'error');
+                return;
+            }
+            
+            const task = {
+                title: title,
+                date: selectedDate.toISOString().split('T')[0],
+                time: time,
+                priority: 'medium',
+                description: '',
+                completed: false,
+                createdAt: new Date()
+            };
+            
+            addTaskToFirebase(task);
+        }
+
+        // Adicionar template de tarefa
+        function addTemplateTask(title, time, priority) {
+            const today = new Date().toISOString().split('T')[0];
+            
+            const task = {
+                title: title,
+                date: today,
+                time: time,
+                priority: priority,
+                description: '',
+                completed: false,
+                createdAt: new Date()
+            };
+            
+            addTaskToFirebase(task);
+        }
+
+        // Função auxiliar para adicionar tarefa ao Firebase
+        async function addTaskToFirebase(task) {
+            if (!currentUser) {
+                showNotification('Você precisa estar logado', 'error');
+                return;
+            }
+            
+            try {
+                const eventsRef = window.collection(window.db, 'users', currentUser.uid, 'events');
+                await window.addDoc(eventsRef, task);
+                showNotification('Compromisso adicionado!', 'success');
             } catch (error) {
                 console.error('Erro ao adicionar tarefa:', error);
                 showNotification('Erro ao adicionar compromisso', 'error');
@@ -1493,6 +1790,9 @@
             });
             
             const container = document.getElementById('todayTasks');
+            
+            // Atualizar progresso do dia
+            updateTodayProgress(todayTasks);
             
             if (todayTasks.length === 0) {
                 container.innerHTML = '<p class="text-gray-500 text-center py-4">Nenhum compromisso para hoje</p>';
@@ -2391,7 +2691,161 @@
             }
         }
 
+        // Atualizar progresso do dia
+        function updateTodayProgress(todayTasks) {
+            const completed = todayTasks.filter(task => task.completed).length;
+            const total = todayTasks.length;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+            
+            const progressCircle = document.getElementById('progressCircle');
+            const progressText = document.getElementById('progressText');
+            
+            if (progressCircle && progressText) {
+                const circumference = 87.96; // 2 * π * 14
+                const offset = circumference - (percentage / 100) * circumference;
+                
+                progressCircle.style.strokeDashoffset = offset;
+                progressText.textContent = `${percentage}%`;
+                
+                // Mudar cor baseada no progresso
+                if (percentage >= 80) {
+                    progressCircle.style.stroke = '#10b981'; // Verde
+                } else if (percentage >= 50) {
+                    progressCircle.style.stroke = '#f59e0b'; // Amarelo
+                } else {
+                    progressCircle.style.stroke = '#ef4444'; // Vermelho
+                }
+            }
+        }
+
+        // Atualizar insights de produtividade
+        function updateProductivityInsights() {
+            // Tarefas concluídas esta semana
+            const today = new Date();
+            const startOfWeek = new Date(today);
+            startOfWeek.setDate(today.getDate() - today.getDay());
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            const weeklyCompleted = tasks.filter(task => {
+                const taskDate = new Date(task.date);
+                return task.completed && taskDate >= startOfWeek && taskDate <= endOfWeek;
+            }).length;
+            
+            // Sequência atual de dias com tarefas concluídas
+            const streak = calculateCurrentStreak();
+            
+            // Próximo compromisso
+            const nextTask = getNextTask();
+            
+            // Atualizar elementos
+            const weeklyElement = document.getElementById('weeklyCompleted');
+            const streakElement = document.getElementById('currentStreak');
+            const nextTaskElement = document.getElementById('nextTask');
+            
+            if (weeklyElement) weeklyElement.textContent = `${weeklyCompleted} concluídos`;
+            if (streakElement) streakElement.textContent = `${streak} dias 🔥`;
+            if (nextTaskElement) {
+                if (nextTask) {
+                    const taskDate = new Date(nextTask.date);
+                    const isToday = taskDate.toDateString() === new Date().toDateString();
+                    const isTomorrow = taskDate.toDateString() === new Date(Date.now() + 86400000).toDateString();
+                    
+                    let dateText = '';
+                    if (isToday) dateText = 'Hoje';
+                    else if (isTomorrow) dateText = 'Amanhã';
+                    else dateText = taskDate.toLocaleDateString('pt-BR', { day: 'numeric', month: 'short' });
+                    
+                    nextTaskElement.textContent = `${nextTask.title} (${dateText})`;
+                } else {
+                    nextTaskElement.textContent = 'Nenhum próximo';
+                }
+            }
+            
+            // Atualizar dica motivacional
+            updateMotivationalTip();
+        }
+
+        // Calcular sequência atual
+        function calculateCurrentStreak() {
+            const today = new Date();
+            let streak = 0;
+            let currentDate = new Date(today);
+            
+            while (true) {
+                const dateStr = currentDate.toISOString().split('T')[0];
+                const dayTasks = tasks.filter(task => task.date === dateStr);
+                const completedTasks = dayTasks.filter(task => task.completed);
+                
+                if (dayTasks.length > 0 && completedTasks.length > 0) {
+                    streak++;
+                    currentDate.setDate(currentDate.getDate() - 1);
+                } else if (dayTasks.length > 0) {
+                    // Tem tarefas mas nenhuma concluída - quebra a sequência
+                    break;
+                } else {
+                    // Não tem tarefas - continua procurando
+                    currentDate.setDate(currentDate.getDate() - 1);
+                    if (streak > 0) break; // Se já tinha sequência, para aqui
+                }
+                
+                // Limite de 30 dias para evitar loop infinito
+                if (streak > 30) break;
+            }
+            
+            return streak;
+        }
+
+        // Obter próximo compromisso
+        function getNextTask() {
+            const now = new Date();
+            const nowStr = now.toISOString().split('T')[0];
+            const currentTime = now.getHours() * 60 + now.getMinutes();
+            
+            const futureTasks = tasks.filter(task => {
+                if (task.completed) return false;
+                
+                const taskDate = new Date(task.date);
+                const taskDateStr = task.date;
+                
+                if (taskDateStr > nowStr) return true;
+                if (taskDateStr === nowStr && task.time) {
+                    const [hours, minutes] = task.time.split(':').map(Number);
+                    const taskTime = hours * 60 + minutes;
+                    return taskTime > currentTime;
+                }
+                
+                return false;
+            }).sort((a, b) => {
+                const dateA = new Date(a.date + (a.time ? ' ' + a.time : ''));
+                const dateB = new Date(b.date + (b.time ? ' ' + b.time : ''));
+                return dateA - dateB;
+            });
+            
+            return futureTasks[0] || null;
+        }
+
+        // Atualizar dica motivacional
+        function updateMotivationalTip() {
+            const tips = [
+                '💡 Dica: Organize suas tarefas por prioridade para ser mais produtivo!',
+                '🎯 Dica: Defina metas pequenas e alcançáveis para manter a motivação!',
+                '⏰ Dica: Use a técnica Pomodoro - 25 min focado, 5 min de pausa!',
+                '📝 Dica: Revise suas tarefas no final do dia para planejar o próximo!',
+                '🌟 Dica: Comemore suas conquistas, por menores que sejam!',
+                '🔄 Dica: Use a função de repetir para criar hábitos saudáveis!',
+                '📊 Dica: Acompanhe seu progresso para manter a motivação alta!',
+                '🎨 Dica: Use cores e prioridades para organizar melhor suas tarefas!'
+            ];
+            
+            const tipElement = document.getElementById('motivationalTip');
+            if (tipElement) {
+                const randomTip = tips[Math.floor(Math.random() * tips.length)];
+                tipElement.querySelector('p').textContent = randomTip;
+            }
+        }
+
         // A inicialização agora é feita pelo evento DOMContentLoaded no script do Firebase
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f8db023264f8bf',t:'MTc1NTI2MjYyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f8f5d622505221',t:'MTc1NTI2MzcyMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
