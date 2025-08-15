@@ -10,34 +10,63 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    
-    <script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+        import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBhRH760_hAthw737CrzmioyZrzCeK5H8s",
-            authDomain: "calendario-53e49.firebaseapp.com",
-            projectId: "calendario-53e49",
-            storageBucket: "calendario-53e49.firebasestorage.app",
-            messagingSenderId: "352958232134",
-            appId: "1:352958232134:web:b233739d0839e6d859bc47",
-            measurementId: "G-LC4DMY51CV"
+            apiKey: "AIzaSyDF6o62Bg3sQwRxi6xrsW-zLa9r-0LOtf0",
+            authDomain: "agenda-2d765.firebaseapp.com",
+            projectId: "agenda-2d765",
+            storageBucket: "agenda-2d765.firebasestorage.app",
+            messagingSenderId: "402572601767",
+            appId: "1:402572601767:web:5e1728920c15a92ae46e82",
+            measurementId: "G-HTZPFSD0EV"
         };
 
         // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Initialize Firebase services
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
         
         // Configure Google Auth Provider
-        const provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new GoogleAuthProvider();
         provider.addScope('email');
         provider.addScope('profile');
+
+        // Aguardar o carregamento completo do Firebase
+        window.addEventListener('DOMContentLoaded', () => {
+            // Tornar as funções globais para uso no HTML
+            window.auth = auth;
+            window.db = db;
+            window.provider = provider;
+            window.signInWithPopup = signInWithPopup;
+            window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+            window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+            window.signOut = signOut;
+            window.onAuthStateChanged = onAuthStateChanged;
+            window.collection = collection;
+            window.doc = doc;
+            window.addDoc = addDoc;
+            window.updateDoc = updateDoc;
+            window.deleteDoc = deleteDoc;
+            window.onSnapshot = onSnapshot;
+            window.query = query;
+            window.orderBy = orderBy;
+            
+            // Sinalizar que o Firebase está pronto
+            window.firebaseReady = true;
+            
+            // Inicializar a aplicação
+            if (typeof init === 'function') {
+                init();
+            }
+        });
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -691,14 +720,26 @@
                 <div class="flex-1 h-px bg-white/30"></div>
             </div>
 
-            <!-- Botão para mostrar formulário de email -->
-            <button onclick="toggleEmailForm()" id="showEmailBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-2 sm:space-x-3 touch-manipulation">
-                <i class="fas fa-sign-in-alt"></i>
-                <span>Entrar com Email</span>
-            </button>
+            <!-- Botões para mostrar formulários -->
+            <div class="space-y-2">
+                <button onclick="showLoginForm()" id="showLoginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-2 sm:space-x-3 touch-manipulation">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Entrar com Email</span>
+                </button>
+                
+                <button onclick="showRegisterForm()" id="showRegisterBtn" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-2 sm:space-x-3 touch-manipulation">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Criar Nova Conta</span>
+                </button>
+            </div>
 
             <!-- Formulário de Login (inicialmente oculto) -->
-            <div id="emailForm" class="hidden mt-3 sm:mt-4">
+            <div id="loginForm" class="hidden mt-3 sm:mt-4">
+                <div class="text-center mb-4">
+                    <h3 class="text-lg font-semibold text-white">Entrar na Conta</h3>
+                    <p class="text-white/70 text-sm">Digite suas credenciais para acessar</p>
+                </div>
+                
                 <form onsubmit="loginWithEmail(event)" class="space-y-3 sm:space-y-4">
                     <input type="email" id="loginEmail" placeholder="Seu e-mail" 
                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required>
@@ -706,8 +747,8 @@
                     <div class="relative">
                         <input type="password" id="loginPassword" placeholder="Sua senha" 
                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required>
-                        <button type="button" onclick="togglePasswordVisibility()" class="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white p-1 touch-manipulation">
-                            <svg id="eyeIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button type="button" onclick="togglePasswordVisibility('loginPassword', 'loginEyeIcon')" class="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white p-1 touch-manipulation">
+                            <svg id="loginEyeIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                             </svg>
@@ -719,9 +760,65 @@
                     </button>
                 </form>
 
-                <button onclick="toggleEmailForm()" class="w-full mt-2 sm:mt-3 text-white/70 hover:text-white text-xs sm:text-sm transition-colors py-2 touch-manipulation">
-                    ← Voltar
-                </button>
+                <div class="flex justify-between mt-3">
+                    <button onclick="hideEmailForms()" class="text-white/70 hover:text-white text-xs sm:text-sm transition-colors py-2 touch-manipulation">
+                        ← Voltar
+                    </button>
+                    <button onclick="showRegisterForm()" class="text-white/70 hover:text-white text-xs sm:text-sm transition-colors py-2 touch-manipulation">
+                        Criar conta →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Formulário de Registro (inicialmente oculto) -->
+            <div id="registerForm" class="hidden mt-3 sm:mt-4">
+                <div class="text-center mb-4">
+                    <h3 class="text-lg font-semibold text-white">Criar Nova Conta</h3>
+                    <p class="text-white/70 text-sm">Preencha os dados para se cadastrar</p>
+                </div>
+                
+                <form onsubmit="registerWithEmail(event)" class="space-y-3 sm:space-y-4">
+                    <input type="text" id="registerName" placeholder="Seu nome completo" 
+                           class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required>
+                    
+                    <input type="email" id="registerEmail" placeholder="Seu e-mail" 
+                           class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required>
+                    
+                    <div class="relative">
+                        <input type="password" id="registerPassword" placeholder="Crie uma senha (mín. 6 caracteres)" 
+                               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required minlength="6">
+                        <button type="button" onclick="togglePasswordVisibility('registerPassword', 'registerEyeIcon')" class="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white p-1 touch-manipulation">
+                            <svg id="registerEyeIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="relative">
+                        <input type="password" id="confirmPassword" placeholder="Confirme sua senha" 
+                               class="w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 text-sm sm:text-base border border-white/30 rounded-lg focus:ring-2 focus:ring-white/50 focus:border-white/50 bg-white/20 text-white placeholder-white/70 hover:border-white/50 transition-all duration-300 backdrop-blur-sm touch-manipulation" required minlength="6">
+                        <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'confirmEyeIcon')" class="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white p-1 touch-manipulation">
+                            <svg id="confirmEyeIcon" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-xl touch-manipulation">
+                        Criar Conta
+                    </button>
+                </form>
+
+                <div class="flex justify-between mt-3">
+                    <button onclick="hideEmailForms()" class="text-white/70 hover:text-white text-xs sm:text-sm transition-colors py-2 touch-manipulation">
+                        ← Voltar
+                    </button>
+                    <button onclick="showLoginForm()" class="text-white/70 hover:text-white text-xs sm:text-sm transition-colors py-2 touch-manipulation">
+                        Já tem conta? →
+                    </button>
+                </div>
             </div>
 
 
@@ -844,19 +941,28 @@
 
         // Inicializar a agenda
         function init() {
+            // Verificar se o Firebase está pronto
+            if (!window.firebaseReady || !window.onAuthStateChanged || !window.auth) {
+                console.log('Aguardando Firebase carregar...');
+                setTimeout(init, 100);
+                return;
+            }
+            
+            console.log('Firebase carregado, inicializando aplicação...');
+            
             // Verificar se o usuário está logado
-            auth.onAuthStateChanged((user) => {
+            window.onAuthStateChanged(window.auth, (user) => {
                 if (user) {
+                    console.log('Usuário logado:', user.email);
                     currentUser = user;
                     showUserInterface();
                     loadUserTasks();
                 } else {
+                    console.log('Usuário não logado');
                     currentUser = null;
                     showLoginModal();
                 }
             });
-            
-
             
             updateCalendar();
             updateTodayTasks();
@@ -948,10 +1054,10 @@
                     unsubscribeAchievements();
                 }
                 
-                const eventsRef = db.collection('users').doc(currentUser.uid).collection('events');
+                const eventsRef = window.collection(window.db, 'users', currentUser.uid, 'events');
                 
                 // Configurar listener em tempo real para eventos (incluindo realizações)
-                unsubscribeEvents = eventsRef.onSnapshot((querySnapshot) => {
+                unsubscribeEvents = window.onSnapshot(eventsRef, (querySnapshot) => {
                     tasks = [];
                     achievements = [];
                     
@@ -999,7 +1105,7 @@
             const password = document.getElementById('loginPassword').value;
             
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                await window.signInWithEmailAndPassword(window.auth, email, password);
                 showNotification('Login realizado com sucesso!', 'success');
             } catch (error) {
                 console.error('Erro no login:', error);
@@ -1038,10 +1144,72 @@
             }
         }
 
+        // Registro com email e senha
+        async function registerWithEmail(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validar se as senhas coincidem
+            if (password !== confirmPassword) {
+                showNotification('As senhas não coincidem. Verifique e tente novamente.', 'error');
+                return;
+            }
+            
+            // Validar força da senha
+            if (password.length < 6) {
+                showNotification('A senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+            
+            try {
+                const userCredential = await window.createUserWithEmailAndPassword(window.auth, email, password);
+                const user = userCredential.user;
+                
+                // Atualizar o perfil do usuário com o nome
+                await user.updateProfile({
+                    displayName: name
+                });
+                
+                showNotification('Conta criada com sucesso! Bem-vindo!', 'success');
+            } catch (error) {
+                console.error('Erro no registro:', error);
+                
+                // Traduzir erros do Firebase para mensagens amigáveis
+                let errorMessage = 'Erro ao criar conta';
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = 'Este e-mail já está cadastrado. Tente fazer login ou use outro e-mail.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = 'E-mail inválido. Verifique o formato do e-mail.';
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres com letras e números.';
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = 'Erro de conexão. Verifique sua internet e tente novamente.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = 'Muitas tentativas. Tente novamente em alguns minutos.';
+                        break;
+                    default:
+                        errorMessage = 'Erro ao criar conta. Tente novamente.';
+                        break;
+                }
+                
+                showNotification(errorMessage, 'error');
+            }
+        }
+
         // Login com Google
         async function loginWithGoogle() {
             try {
-                const result = await auth.signInWithPopup(provider);
+                const result = await window.signInWithPopup(window.auth, window.provider);
                 const user = result.user;
                 console.log('Login com Google bem-sucedido:', user);
                 showNotification('Login com Google realizado com sucesso!', 'success');
@@ -1094,7 +1262,7 @@
                     unsubscribeAchievements = null;
                 }
                 
-                await auth.signOut();
+                await window.signOut(window.auth);
                 tasks = [];
                 
                 // Aplicar desfoque e desabilitar interação
@@ -1299,7 +1467,8 @@
             };
             
             try {
-                const docRef = await db.collection('users').doc(currentUser.uid).collection('events').add(task);
+                const eventsRef = window.collection(window.db, 'users', currentUser.uid, 'events');
+                const docRef = await window.addDoc(eventsRef, task);
                 task.id = docRef.id;
                 
                 // Limpar formulário
@@ -1645,9 +1814,9 @@
         }
 
         // Mostrar/ocultar senha
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('loginPassword');
-            const eyeIcon = document.getElementById('eyeIcon');
+        function togglePasswordVisibility(inputId, iconId) {
+            const passwordInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
             
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
@@ -1663,6 +1832,30 @@
             }
         }
 
+        // Mostrar formulário de login
+        function showLoginForm() {
+            document.getElementById('showLoginBtn').classList.add('hidden');
+            document.getElementById('showRegisterBtn').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+        }
+
+        // Mostrar formulário de registro
+        function showRegisterForm() {
+            document.getElementById('showLoginBtn').classList.add('hidden');
+            document.getElementById('showRegisterBtn').classList.add('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        // Ocultar formulários de email
+        function hideEmailForms() {
+            document.getElementById('showLoginBtn').classList.remove('hidden');
+            document.getElementById('showRegisterBtn').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+        }
+
         // Alternar status da tarefa
         async function toggleTask(id) {
             if (!currentUser) return;
@@ -1672,7 +1865,8 @@
                 const newStatus = !task.completed;
                 
                 try {
-                    await db.collection('users').doc(currentUser.uid).collection('events').doc(String(id)).update({
+                    const taskRef = window.doc(window.db, 'users', currentUser.uid, 'events', String(id));
+                    await window.updateDoc(taskRef, {
                         completed: newStatus
                     });
                     
@@ -1690,7 +1884,8 @@
             
             if (confirm('Tem certeza que deseja excluir este compromisso?')) {
                 try {
-                    await db.collection('users').doc(currentUser.uid).collection('events').doc(String(id)).delete();
+                    const taskRef = window.doc(window.db, 'users', currentUser.uid, 'events', String(id));
+                    await window.deleteDoc(taskRef);
                     
                     // Não precisa atualizar manualmente - sincronização automática
                     showNotification('Compromisso excluído!', 'success');
@@ -1774,7 +1969,8 @@
             };
             
             try {
-                await db.collection('users').doc(currentUser.uid).collection('events').doc(taskId).update(updatedTask);
+                const taskRef = window.doc(window.db, 'users', currentUser.uid, 'events', taskId);
+                await window.updateDoc(taskRef, updatedTask);
                 
                 closeEditModal();
                 showNotification('Compromisso atualizado com sucesso!', 'success');
@@ -1836,7 +2032,8 @@
             
             try {
                 // Usar a coleção 'events' com um prefixo para identificar realizações
-                const docRef = await db.collection('users').doc(currentUser.uid).collection('events').add({
+                const eventsRef = window.collection(window.db, 'users', currentUser.uid, 'events');
+                const docRef = await window.addDoc(eventsRef, {
                     ...achievement,
                     type: 'achievement' // Identificador para diferenciar de compromissos
                 });
@@ -2129,7 +2326,8 @@
             
             try {
                 // Usar a coleção 'events' onde as realizações estão armazenadas
-                await db.collection('users').doc(currentUser.uid).collection('events').doc(achievementId).update(updatedAchievement);
+                const achievementRef = window.doc(window.db, 'users', currentUser.uid, 'events', achievementId);
+                await window.updateDoc(achievementRef, updatedAchievement);
                 
                 closeEditAchievementModal();
                 showNotification('Realização atualizada com sucesso!', 'success');
@@ -2160,7 +2358,8 @@
                 const newStatus = !achievement.completed;
                 
                 try {
-                    await db.collection('users').doc(currentUser.uid).collection('events').doc(String(id)).update({
+                    const achievementRef = window.doc(window.db, 'users', currentUser.uid, 'events', String(id));
+                    await window.updateDoc(achievementRef, {
                         completed: newStatus,
                         completedAt: newStatus ? new Date() : null
                     });
@@ -2181,7 +2380,8 @@
             if (confirm('Tem certeza que deseja excluir esta realização?')) {
                 try {
                     // Usar a coleção 'events' onde as realizações estão armazenadas
-                    await db.collection('users').doc(currentUser.uid).collection('events').doc(String(id)).delete();
+                    const achievementRef = window.doc(window.db, 'users', currentUser.uid, 'events', String(id));
+                    await window.deleteDoc(achievementRef);
                     
                     showNotification('Realização excluída!', 'success');
                 } catch (error) {
@@ -2191,8 +2391,7 @@
             }
         }
 
-        // Inicializar quando a página carregar
-        init();
+        // A inicialização agora é feita pelo evento DOMContentLoaded no script do Firebase
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96e8941fa40a9416',t:'MTc1NTA5MTk0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f8db023264f8bf',t:'MTc1NTI2MjYyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
